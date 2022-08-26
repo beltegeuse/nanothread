@@ -16,11 +16,11 @@ int main(int, char**) {
     // Create a worker per CPU thread
     Pool *pool = pool_create(100);
 
-    Task *task = drjit::parallel_for_async(
-        drjit::blocked_range<uint32_t>(0, 1000, 1),
+    Task *task = nanothread::parallel_for_async(
+        nanothread::blocked_range<uint32_t>(0, 1000, 1),
 
         // Task callback function. Will be called with index = 0..999
-        [&](drjit::blocked_range<uint32_t> range) {
+        [&](nanothread::blocked_range<uint32_t> range) {
             for (uint32_t i = range.begin(); i != range.end(); ++i) {
                 printf("Worker thread %u: work unit %u\n", pool_thread_id(), i);
 

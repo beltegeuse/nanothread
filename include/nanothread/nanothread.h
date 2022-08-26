@@ -327,7 +327,7 @@ void task_submit_and_wait(Pool *pool,
 
 #include <utility>
 
-namespace drjit {
+namespace nanothread {
     template <typename Int> struct blocked_range {
     public:
         blocked_range(Int begin, Int end, Int block_size = 1)

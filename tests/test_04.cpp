@@ -15,13 +15,13 @@ void my_sleep(uint32_t amt) {
 #endif
 }
 
-namespace dr = drjit;
+namespace nt = nanothread;
 
 void test01() {
     try {
-        dr::parallel_for(
-            dr::blocked_range<uint32_t>(0, 1000, 5),
-            [](dr::blocked_range<uint32_t> /* range */) {
+        nt::parallel_for(
+            nt::blocked_range<uint32_t>(0, 1000, 5),
+            [](nt::blocked_range<uint32_t> /* range */) {
                 throw std::runtime_error("Hello world!");
             }
         );
@@ -33,9 +33,9 @@ void test01() {
 }
 
 void test02(bool wait) {
-    auto work1 = dr::parallel_for_async(
-        dr::blocked_range<uint32_t>(0, 10, 1),
-        [](dr::blocked_range<uint32_t> /* range */) {
+    auto work1 = nt::parallel_for_async(
+        nt::blocked_range<uint32_t>(0, 10, 1),
+        [](nt::blocked_range<uint32_t> /* range */) {
             my_sleep(10);
             throw std::runtime_error("Hello world!");
         }
@@ -44,9 +44,9 @@ void test02(bool wait) {
     if (wait)
         my_sleep(100);
 
-    auto work2 = dr::parallel_for_async(
-        dr::blocked_range<uint32_t>(0, 10, 1),
-        [](dr::blocked_range<uint32_t> /* range */) {
+    auto work2 = nt::parallel_for_async(
+        nt::blocked_range<uint32_t>(0, 10, 1),
+        [](nt::blocked_range<uint32_t> /* range */) {
             printf("Should never get here!\n");
             abort();
         },

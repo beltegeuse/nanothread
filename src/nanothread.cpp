@@ -413,11 +413,11 @@ void Worker::run() {
 
     #if defined(_WIN32)
         wchar_t buf[24];
-        _snwprintf(buf, sizeof(buf) / sizeof(wchar_t), L"DrJit worker %u", id);
+        _snwprintf(buf, sizeof(buf) / sizeof(wchar_t), L"Nanothread worker %u", id);
         SetThreadDescription(GetCurrentThread(), buf);
     #else
         char buf[24];
-        snprintf(buf, sizeof(buf), "DrJit worker %u", id);
+        snprintf(buf, sizeof(buf), "Nanothread worker %u", id);
         #if defined(__APPLE__)
             pthread_setname_np(buf);
         #else

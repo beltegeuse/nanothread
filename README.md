@@ -55,17 +55,17 @@ Example:
 ```cpp
 #include <nanothread/nanothread.h>
 
-namespace dr = drjit;
+namespace nt = nanothread;
 
 int main(int, char **) {
     int result[100];
 
     // Call the provided lambda function 99 times with blocks of size 1
-    dr::parallel_for(
-        dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ 100, /* block_size = */ 1),
+    nt::parallel_for(
+        nt::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ 100, /* block_size = */ 1),
 
         // The callback is allowed to be a stateful lambda function
-        [&](dr::blocked_range<uint32_t> range) {
+        [&](nt::blocked_range<uint32_t> range) {
             for (uint32_t i = range.begin(); i != range.end(); ++i) {
                 printf("Worker thread %u is starting to process work unit %u\n",
                        pool_thread_id(), i);
@@ -81,7 +81,7 @@ int main(int, char **) {
 Small amounts of work that only consist of a single block will immediately be
 executed on the calling thread instead of involving the thread pool. Exceptions
 occurring during parallel execution will be captured and re-thrown by
-``dr::parallel_for``.
+``nt::parallel_for``.
 
 ### Parallel for loops (asynchronous)
 
@@ -106,25 +106,25 @@ Example:
 ```cpp
 #include <nanothread/nanothread.h>
 
-namespace dr = drjit;
+namespace nt = nanothread;
 
 int main(int, char **) {
     // Schedule task 1
-    Task *task_1 = dr::parallel_for_async(
-        dr::blocked_range<uint32_t>(/* ... */),
-        [&](dr::blocked_range<uint32_t> range) { /* ... */ }
+    Task *task_1 = nt::parallel_for_async(
+        nt::blocked_range<uint32_t>(/* ... */),
+        [&](nt::blocked_range<uint32_t> range) { /* ... */ }
     );
 
     // Schedule task 2
-    Task *task_2 = dr::parallel_for_async(
-        dr::blocked_range<uint32_t>(/* ... */),
-        [&](dr::blocked_range<uint32_t> range) { /* ... */ }
+    Task *task_2 = nt::parallel_for_async(
+        nt::blocked_range<uint32_t>(/* ... */),
+        [&](nt::blocked_range<uint32_t> range) { /* ... */ }
     );
 
     // Schedule task 3 ...
-    Task *task_3 = dr::parallel_for_async(
-        dr::blocked_range<uint32_t>(/* ... */),
-        [&](dr::blocked_range<uint32_t> range) { /* ... */ },
+    Task *task_3 = nt::parallel_for_async(
+        nt::blocked_range<uint32_t>(/* ... */),
+        [&](nt::blocked_range<uint32_t> range) { /* ... */ },
         { task_1, task_2 } // ... <- but don't execute until these tasks are done
     );
 
